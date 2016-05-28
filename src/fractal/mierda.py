@@ -10,8 +10,8 @@ import logging
 import fileinput
 import array
 logger_cagada = None
-# nivel_log = logging.ERROR
-nivel_log = logging.DEBUG
+nivel_log = logging.ERROR
+#nivel_log = logging.DEBUG
 
 def fractal_minimo_esclavos(tam_seq_orig, complejidad):
     min_esc = 0
@@ -30,7 +30,7 @@ def fractal_posiciones_sensuales(tam_seq_orig, complejidad):
     niveles_cubiertos = 0
     excedente_niveles = 0
     primer_pos_sensual = 0
-    posiciones = array.array("I")
+    posiciones = array.array("L")
     
     tam_seq_act = tam_seq_orig ** (complejidad - 1)
     while(int(tam_seq_act) > 0 and niveles_cubiertos < tam_seq_orig):
@@ -55,14 +55,17 @@ def fractal_main():
     lineas = None
 
     lineas = list(fileinput.input())
+    logger_cagada.debug("las lienas son %s"%lineas)
     casos = int(lineas[0])
     
+    logger_cagada.debug("el num de casos %u" % casos)
     for linea in lineas[1:]:
         posible = False
         min_esc = 0
         (tam_seq, comple, escla) = 0, 0, 0
-        posiciones_sex = array.array("I")
+        posiciones_sex = array.array("L")
         
+        logger_cagada.debug("la linea orginal %s" % linea)
         (tam_seq, comple, escla) = [int(x.strip()) for x in linea.split(" ")]
         
         logger_cagada.debug("case %u: el tam seq %u, al comple %u y los escla %u" % (num_caso, tam_seq, comple, escla))
@@ -70,11 +73,14 @@ def fractal_main():
         logger_cagada.debug("el min d esclavos nec %u, el provisto %u" % (min_esc, escla))
         posible = min_esc <= escla
         logger_cagada.debug("CAZA %u es %s" % (num_caso, posible))
-        num_caso += 1
         if(posible):
             posiciones_sex = fractal_posiciones_sensuales(tam_seq, comple)
             logger_cagada.debug("las posiciones sensualonas %s" % posiciones_sex)
-            assert(len(posiciones_sex) >= min_esc)
+            assert(len(posiciones_sex) == min_esc)
+            print("Case #%lu: %s" % (num_caso, " ".join([str(x) for x in posiciones_sex])))
+        else:
+            print("Case #%lu: IMPOSSIBLE" % (num_caso))
+        num_caso += 1
         
         
     
