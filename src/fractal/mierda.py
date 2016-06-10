@@ -19,32 +19,39 @@ def fractal_minimo_esclavos(tam_seq_orig, complejidad):
     logger_cagada.debug("tam seq %u, complejidad %u" % (tam_seq_orig, complejidad))
     tam_seq_final = int(tam_seq_orig ** complejidad)
     logger_cagada.debug("tam seq final %u" % tam_seq_final)
-    min_esc = tam_seq_orig - complejidad
-    if(min_esc >= 0):
-        min_esc += 1
+    if(complejidad == 1):
+        min_esc = tam_seq_orig
     else:
+        min_esc = math.ceil(tam_seq_orig / (complejidad ))
+    if(min_esc == 0):
         min_esc = 1
     return min_esc
 
 def fractal_posiciones_sensuales(tam_seq_orig, complejidad):
     niveles_cubiertos = 0
     excedente_niveles = 0
-    primer_pos_sensual = 0
+    pos_sensual = 0
     posiciones = array.array("L")
     
-    tam_seq_act = tam_seq_orig ** (complejidad - 1)
-    while(int(tam_seq_act) > 0 and niveles_cubiertos < tam_seq_orig):
-        primer_pos_sensual += niveles_cubiertos * tam_seq_act
-        logger_cagada.debug("la primera pos %u con nivel %u con pedazo de tamano %u" % (primer_pos_sensual, niveles_cubiertos, tam_seq_act))
-        niveles_cubiertos += 1
-        tam_seq_act /= tam_seq_orig
-    excedente_niveles = tam_seq_orig - niveles_cubiertos
-    logger_cagada.debug("el xcedente de nivl %u" % excedente_niveles)
-    assert(excedente_niveles >= 0)
-    primer_pos_sensual = int(primer_pos_sensual) + 1
-    for pos_nueva in range(primer_pos_sensual, primer_pos_sensual + excedente_niveles + 1):
-        logger_cagada.debug("anadiendo posicion %u extra" % (pos_nueva))
-        posiciones.append(pos_nueva)
+    excedente_niveles = tam_seq_orig
+    
+    while(excedente_niveles):
+        pos_sensual=0
+        tam_seq_act = tam_seq_orig ** (complejidad - 1)
+        while(int(tam_seq_act) > 0 and niveles_cubiertos < tam_seq_orig):
+            pos_sensual += niveles_cubiertos * tam_seq_act
+            logger_cagada.debug("la primera pos %u con nivel %u con pedazo de tamano %u" % (pos_sensual, niveles_cubiertos, tam_seq_act))
+            niveles_cubiertos += 1
+            tam_seq_act /= tam_seq_orig
+        excedente_niveles = tam_seq_orig - niveles_cubiertos
+        logger_cagada.debug("el xcedente de nivl %u" % excedente_niveles)
+    
+        pos_sensual = int(pos_sensual) + 1
+        logger_cagada.debug("anadiendo posicion %u" % (pos_sensual))
+        posiciones.append(pos_sensual)
+    
+    assert(excedente_niveles == 0)
+    
     return posiciones
     
     
@@ -55,7 +62,7 @@ def fractal_main():
     lineas = None
 
     lineas = list(fileinput.input())
-    logger_cagada.debug("las lienas son %s"%lineas)
+    logger_cagada.debug("las lienas son %s" % lineas)
     casos = int(lineas[0])
     
     logger_cagada.debug("el num de casos %u" % casos)
