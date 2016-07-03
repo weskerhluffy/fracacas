@@ -24,9 +24,9 @@ int main() {
 				ll idx = 0;
 				for (int j = 0; j < c; j++) {
 					idx = idx * k + min(i + j, k - 1);
-					printf("suma parcial %lu en i %u j %u\n", idx + 1, i, j);
+//					printf("suma parcial %lu en i %u j %u\n", idx + 1, i, j);
 				}
-				printf("posicion %ld\n", idx + 1);
+				printf(" %ld", idx + 1);
 			}
 		}
 		printf("\n");
