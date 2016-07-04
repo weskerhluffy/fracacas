@@ -22,7 +22,7 @@ def fractal_minimo_esclavos(tam_seq_orig, complejidad):
     if(complejidad == 1):
         min_esc = tam_seq_orig
     else:
-        min_esc = math.ceil(tam_seq_orig / (complejidad ))
+        min_esc = math.ceil(tam_seq_orig / (complejidad))
     if(min_esc == 0):
         min_esc = 1
     return min_esc
@@ -36,13 +36,18 @@ def fractal_posiciones_sensuales(tam_seq_orig, complejidad):
     excedente_niveles = tam_seq_orig
     
     while(excedente_niveles):
-        pos_sensual=0
-        tam_seq_act = tam_seq_orig ** (complejidad - 1)
+        pos_sensual = 0
+        tam_seq_act = int(tam_seq_orig ** (complejidad - 1))
         while(int(tam_seq_act) > 0 and niveles_cubiertos < tam_seq_orig):
-            pos_sensual += niveles_cubiertos * tam_seq_act
-            logger_cagada.debug("la primera pos %u con nivel %u con pedazo de tamano %u" % (pos_sensual, niveles_cubiertos, tam_seq_act))
+            desplazamiento_actual = 0
+            
+            desplazamiento_actual = int(niveles_cubiertos * tam_seq_act)
+            logger_cagada.debug("que putas stoy sumando %lu(%s) a %lu(%s) el res deberia ser %lu" % (desplazamiento_actual, type(desplazamiento_actual), pos_sensual, type(pos_sensual), pos_sensual + desplazamiento_actual))
+            pos_sensual += desplazamiento_actual
+            logger_cagada.debug("la primera pos %lu con nivel %u con pedazo de tamano %u" % (pos_sensual, niveles_cubiertos, tam_seq_act))
+            logger_cagada.debug("baia baia %lu pos asta aora %lu" % (desplazamiento_actual, pos_sensual))
             niveles_cubiertos += 1
-            tam_seq_act /= tam_seq_orig
+            tam_seq_act = int(tam_seq_act / tam_seq_orig)
         excedente_niveles = tam_seq_orig - niveles_cubiertos
         logger_cagada.debug("el xcedente de nivl %u" % excedente_niveles)
     
